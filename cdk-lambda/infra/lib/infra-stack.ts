@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as lambda from "aws-cdk-lib/aws-lambda"
+import * as cloudWatch from "aws-cdk-lib/aws-cloudwatch"
 
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -19,6 +20,12 @@ export class InfraStack extends cdk.Stack {
       code:lambda.Code.fromAsset("../services/"),
       functionName:"democdklambda"
 
+    })
+
+    const cloudWatchDemo = new cloudWatch.Alarm(this, "CloudWatchLogicalId", {
+      evaluationPeriods:1,
+      threshold:1,
+      metric:demoLambdaFun.metricErrors()
     })
   }
 }
